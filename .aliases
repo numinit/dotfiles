@@ -1,0 +1,73 @@
+# Common commands
+alias e='vim'
+alias ls='ls --color=auto'
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alhF'
+alias d='cd'
+alias puts='echo'
+alias p='ipython'
+alias py='python'
+alias r='pry'
+alias jr='jpry'
+alias rb='ruby'
+alias jrb='jruby'
+alias c='clear'
+alias j='jsc'
+alias ml='matlab'
+
+# Go to the higher directory
+alias up='cd ..'
+alias u='up'
+
+# Go to the previous directory
+alias back='cd $OLDPWD'
+alias b='back'
+
+# Open the current directory
+alias o='open .'
+
+# Always make intermediate directories
+alias mkdir='mkdir -p'
+
+# Always ask
+alias rm='rm -i'
+
+# Some shortcuts for longer commands
+alias weechat='weechat-curses'
+alias irc='weechat'
+alias jsc='node'
+alias profile='zshrc'
+alias xkcd='xkcd -o'
+alias growl='growlnotify -m'
+alias redis='redis-cli'
+alias pandora='clear; pianobar'
+alias cert='openssl x509 -noout -text -in'
+alias req='openssl req -noout -text -in'
+alias crl='openssl crl -noout -text -in'
+alias tmux='TERM=screen-256color-bce tmux'
+alias matlab='matlab -nodesktop'
+
+# Compound commands
+alias reload='echo -n "Reloading..."; source ~/.zshrc >/dev/null; echo " done!"'
+alias aliases='vim ~/.aliases -f sh-mode; reload'
+alias zshrc='vim ~/.zshrc -f sh-mode; reload'
+alias pryrc='vim ~/.pryrc -f ruby-mode'
+alias pubkey='cat ~/.ssh/id_rsa.pub'
+alias extip='curl ifconfig.me'
+
+# git aliases
+alias pull='git pull'
+alias push='git push'
+alias commit='git commit -S -a'
+alias branch='git branch'
+alias rebase='git rebase'
+alias add='git add'
+alias yolo='git push -f'
+
+# wow such commit
+alias wow='git status'
+alias such='git'
+
+# Nocorrect
+alias fortune="nocorrect fortune"

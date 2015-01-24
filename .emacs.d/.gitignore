@@ -1,0 +1,9 @@
+bookmarks
+*.dat
+*.notes
+*.elc
+emacs-desktop/*
+auto-save-list/*
+lisp/auto-save-list/*
+backup/*
+autosave/*
