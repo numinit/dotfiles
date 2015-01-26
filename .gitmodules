@@ -97,3 +97,6 @@
 [submodule ".zprezto"]
 	path = .zprezto
 	url = https://github.com/sorin-ionescu/prezto.git
+[submodule ".vim/bundle/vim-veloth"]
+	path = .vim/bundle/vim-veloth
+	url = https://github.com/numinit/vim-veloth.git

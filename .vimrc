@@ -6,9 +6,9 @@ set nocompatible
 syntax on
 filetype plugin indent on
 
-""" Aldmeris color theme
-:colorscheme aldmeris
-let g:aldmeris_transparent = 1
+""" Veloth color theme
+:colorscheme veloth
+let g:veloth_transparent = 1
 
 """ Modelines
 :set modelines=5
