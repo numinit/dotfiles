@@ -1,6 +1,3 @@
-[submodule ".oh-my-zsh"]
-	path = .oh-my-zsh
-	url = https://github.com/robbyrussell/oh-my-zsh.git
 [submodule ".emacs.d/lisp/auctex"]
 	path = .emacs.d/lisp/auctex
 	url = https://github.com/jwiegley/auctex.git
@@ -100,3 +97,15 @@
 [submodule ".vim/bundle/vim-veloth"]
 	path = .vim/bundle/vim-veloth
 	url = https://github.com/numinit/vim-veloth.git
+[submodule "/Users/arctus/.vim/bundle/vim-supertab"]
+	path = /Users/arctus/.vim/bundle/vim-supertab
+	url = https://github.com/ervandew/supertab.git
+[submodule ".vim/bundle/vim-misc"]
+	path = .vim/bundle/vim-misc
+	url = https://github.com/xolox/vim-misc.git
+[submodule ".vim/bundle/vim-sessino"]
+	path = .vim/bundle/vim-sessino
+	url = https://github.com/xolox/vim-session.git
+[submodule ".vim/bundle/vim-session"]
+	path = .vim/bundle/vim-session
+	url = https://github.com/xolox/vim-session.git

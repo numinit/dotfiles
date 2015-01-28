@@ -26,3 +26,4 @@ bindkey -M viins "$key_info[Control]A" beginning-of-line
 bindkey -M vicmd "$key_info[Control]A" beginning-of-line
 bindkey -M viins "$key_info[Control]E" end-of-line
 bindkey -M vicmd "$key_info[Control]E" end-of-line
+
