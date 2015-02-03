@@ -9,13 +9,15 @@ command -v git >/dev/null 2>&1 || { echo >&2 "[!!] Install git to continue."; ex
 type git >/dev/null 2>&1 || { echo >&2 "[!!] Install git to continue."; exit 1; }
 hash git >/dev/null 2>&1 || { echo >&2 "[!!] Install git to continue."; exit 1; }
 GIT="$(which git)"
-echo "[**] You have all prerequisites. Press ENTER to sync submodules."
+echo "[**] You have all prerequisites. Press ENTER to continue."
 read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
 
-echo "[**] Initializing submodules"
-$GIT submodule update --init --recursive
-$GIT submodule foreach --recursive git fetch
-$GIT submodule foreach git pull --ff-only origin master
+if [ -z "$NO_SUBMODULES" ]; then
+  echo "[**] Initializing submodules"
+  $GIT submodule update --init --recursive
+  $GIT submodule foreach --recursive git fetch
+  $GIT submodule foreach git pull --ff-only origin master
+fi
 
 cd "$DIR"
 FILES=`git ls-tree --name-only HEAD | grep -e '.*' 2>/dev/null | grep -ve '.git*' 2>/dev/null`
