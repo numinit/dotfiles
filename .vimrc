@@ -26,7 +26,6 @@ autocmd BufRead, BufNewFile *.coffee sw=2 ts=2
 :match ExtraWhitespace /\s\+$/
 
 """ clang
-let g:clang_library_path="/Library/Developer/CommandLineTools/usr/lib"
 let g:clang_auto_select=1
 let g:clang_complete_auto=1
 let g:clang_complete_copen=1
@@ -35,6 +34,10 @@ let g:clang_periodic_quickfix=1
 let g:clang_trailing_placeholder=1
 let g:clang_close_preview=1
 let g:clang_snippets=1
+
+""" Sessions
+let g:session_autoload = 'yes'
+let g:session_autosave = 'yes'
 
 """ Show line numbers
 :set number
@@ -48,3 +51,7 @@ if has("gui_running")
   :set transparency=10
 endif
 
+""" load platform configuration
+if filereadable("~/.vim_platform")
+  :source "~/.vim_platform"
+endif
