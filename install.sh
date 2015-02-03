@@ -26,7 +26,7 @@ FILES=`git ls-tree --name-only HEAD | grep -ve '.git*' 2>/dev/null | grep -ve 'i
 echo "[**] About to perform the following commands:"
 for i in $FILES; do
   SRC="$(realpath $i)"
-  DEST="$(realpath ~/$i)"
+  DEST=~/"$i"
   echo "[>>] rm -rf \"$SRC\""
   echo "[>>] ln -s \"$SRC\" \"$DEST\""
 done
@@ -35,7 +35,7 @@ read -t 10 || { echo >&2 "[!!] User abort."; exit 1; }
 
 for i in $FILES; do
   SRC="$(realpath $i)"
-  DEST="$(realpath ~/$i)"
+  DEST=~/"$i"
   echo "[>>] $SRC => $DEST"
   rm -rf "$DEST" || { echo >&2 "[!!] Error removing $DEST"; exit 1; }
   ln -s "$SRC" "$DEST" || { echo >&2 "[!!] Error symlinking $SRC to $DEST"; exit 1; }
