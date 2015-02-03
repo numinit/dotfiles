@@ -27,7 +27,7 @@ echo "[**] About to perform the following commands:"
 for i in $FILES; do
   SRC="$(realpath $i)"
   DEST=~/"$i"
-  echo "[>>] rm -rf \"$SRC\""
+  echo "[>>] rm -rf \"$DEST\""
   echo "[>>] ln -s \"$SRC\" \"$DEST\""
 done
 echo "[**] Press ENTER to continue or CTRL+C to abort."
