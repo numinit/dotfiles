@@ -13,15 +13,12 @@ echo "[**] You have all prerequisites. Press ENTER to sync submodules."
 read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
 
 echo "[**] Initializing submodules"
-$GIT reset --hard HEAD
-$GIT submodule init
-$GIT submodule update
-cd .zprezto
-$GIT submodule init
-$GIT submodule update
+$GIT submodule update --init --recursive
+$GIT submodule foreach --recursive git fetch
+$GIT submodule foreach git pull --ff-only origin master
 
 cd "$DIR"
-FILES=`git ls-tree --name-only HEAD | grep -ve '.git*' 2>/dev/null | grep -ve 'install.sh' 2>/dev/null`
+FILES=`git ls-tree --name-only HEAD | grep -e '.*' 2>/dev/null | grep -ve '.git*' 2>/dev/null`
 
 echo "[**] About to perform the following commands:"
 for i in $FILES; do
