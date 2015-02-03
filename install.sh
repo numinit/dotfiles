@@ -13,12 +13,14 @@ echo "[**] You have all prerequisites. Press ENTER to sync submodules."
 read -t 10 || { echo >&2 "[!!] User abort."; exit 1; }
 
 echo "[**] Initializing submodules"
+$GIT reset --hard HEAD
 $GIT submodule init
 $GIT submodule update
 cd .zprezto
 $GIT submodule init
 $GIT submodule update
 
+cd "$DIR"
 FILES=`git ls-tree --name-only HEAD | grep -ve '.git*' 2>/dev/null | grep -ve 'install.sh' 2>/dev/null`
 
 echo "[**] About to remove and reinstall the following files:"
@@ -28,7 +30,6 @@ done
 echo "[**] Press ENTER to continue or CTRL+C to abort."
 read -t 10 || { echo >&2 "[!!] User abort."; exit 1; }
 
-cd "$DIR"
 for i in $FILES do
   echo "[>>] symlink $i -> "~/"$i"
   rm -rf ~/"$i" || { echo >&2 "Error removing "~/"%$i"; exit 1; }
