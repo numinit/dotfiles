@@ -34,9 +34,6 @@
 [submodule ".emacs.d/lisp/popup-el"]
 	path = .emacs.d/lisp/popup-el
 	url = https://github.com/auto-complete/popup-el.git
-[submodule "emacs-minimap"]
-	path = emacs-minimap
-	url = https://github.com/dustinlacewell/emacs-minimap.git
 [submodule ".emacs.d/lisp/emacs-minimap"]
 	path = .emacs.d/lisp/emacs-minimap
 	url = https://github.com/dustinlacewell/emacs-minimap.git
@@ -85,9 +82,6 @@
 [submodule ".vim/bundle/vim-latex"]
 	path = .vim/bundle/vim-latex
 	url = https://github.com/jcf/vim-latex.git
-[submodule ".powerline"]
-	path = .powerline
-	url = https://github.com/Lokaltog/powerline.git
 [submodule ".vim/bundle/vim-slim"]
 	path = .vim/bundle/vim-slim
 	url = https://github.com/slim-template/vim-slim.git
@@ -97,15 +91,12 @@
 [submodule ".vim/bundle/vim-veloth"]
 	path = .vim/bundle/vim-veloth
 	url = https://github.com/numinit/vim-veloth.git
-[submodule "/Users/arctus/.vim/bundle/vim-supertab"]
-	path = /Users/arctus/.vim/bundle/vim-supertab
+[submodule ".vim/bundle/vim-supertab"]
+	path = .vim/bundle/vim-supertab
 	url = https://github.com/ervandew/supertab.git
 [submodule ".vim/bundle/vim-misc"]
 	path = .vim/bundle/vim-misc
 	url = https://github.com/xolox/vim-misc.git
-[submodule ".vim/bundle/vim-sessino"]
-	path = .vim/bundle/vim-sessino
-	url = https://github.com/xolox/vim-session.git
 [submodule ".vim/bundle/vim-session"]
 	path = .vim/bundle/vim-session
 	url = https://github.com/xolox/vim-session.git
