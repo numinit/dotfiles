@@ -10,7 +10,7 @@ type git >/dev/null 2>&1 || { echo >&2 "[!!] Install git to continue."; exit 1; 
 hash git >/dev/null 2>&1 || { echo >&2 "[!!] Install git to continue."; exit 1; }
 GIT="$(which git)"
 echo "[**] You have all prerequisites. Press ENTER to sync submodules."
-read -t 10 || { echo >&2 "[!!] User abort."; exit 1; }
+read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
 
 echo "[**] Initializing submodules"
 $GIT reset --hard HEAD
@@ -31,7 +31,7 @@ for i in $FILES; do
   echo "[>>] ln -s \"$SRC\" \"$DEST\""
 done
 echo "[**] Press ENTER to continue or CTRL+C to abort."
-read -t 10 || { echo >&2 "[!!] User abort."; exit 1; }
+read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
 
 for i in $FILES; do
   SRC="$(realpath $i)"
