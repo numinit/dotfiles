@@ -23,18 +23,23 @@ $GIT submodule update
 cd "$DIR"
 FILES=`git ls-tree --name-only HEAD | grep -ve '.git*' 2>/dev/null | grep -ve 'install.sh' 2>/dev/null`
 
-echo "[**] About to remove and reinstall the following files:"
+echo "[**] About to perform the following commands:"
 for i in $FILES; do
-  echo ">> "~/"$i"
+  SRC="$(realpath $i)"
+  DEST="$(realpath ~/$i)"
+  echo "[>>] rm -rf \"$SRC\""
+  echo "[>>] ln -s \"$SRC\" \"$DEST\""
 done
 echo "[**] Press ENTER to continue or CTRL+C to abort."
 read -t 10 || { echo >&2 "[!!] User abort."; exit 1; }
 
 for i in $FILES do
-  echo "[>>] symlink $i -> "~/"$i"
-  rm -rf ~/"$i" || { echo >&2 "Error removing "~/"%$i"; exit 1; }
-  ln -s "$(realpath $i)" ~/"$i" || { echo >&2 "Error symlinking $(realpath $i) to "~/"$i"; exit 1; }
+  SRC="$(realpath $i)"
+  DEST="$(realpath ~/$i)"
+  echo "[>>] $SRC => $DEST"
+  rm -rf "$DEST" || { echo >&2 "[!!] Error removing $DEST"; exit 1; }
+  ln -s "$SRC" "$DEST" || { echo >&2 "[!!] Error symlinking $SRC to $DEST"; exit 1; }
 done
 cd "$CWD"
-echo "[**] Done, logout and login"
+echo "[**] Done, logout and login to activate the new settings"
 exit 0
