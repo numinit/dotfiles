@@ -33,7 +33,7 @@ done
 echo "[**] Press ENTER to continue or CTRL+C to abort."
 read -t 10 || { echo >&2 "[!!] User abort."; exit 1; }
 
-for i in $FILES do
+for i in $FILES; do
   SRC="$(realpath $i)"
   DEST="$(realpath ~/$i)"
   echo "[>>] $SRC => $DEST"
