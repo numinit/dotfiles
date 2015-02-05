@@ -39,6 +39,15 @@ let g:clang_snippets=1
 let g:session_autoload = 'yes'
 let g:session_autosave = 'yes'
 
+""" tmuxline
+let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'c'    : ['#(whoami)'],
+      \'win'  : ['#I', '#W'],
+      \'cwin' : ['#I', '#W', '#F'],
+      \'y'    : ['%R', '%a'],
+      \'z'    : '#H'}
+
 """ Show line numbers
 :set number
 
