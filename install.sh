@@ -1,7 +1,5 @@
 #!/bin/sh
 
-SCRIPT=$(readlink -f "$0")
-DIR=$(dirname "$SCRIPT")
 CWD="$(pwd)"
 
 prereq () {
@@ -16,16 +14,24 @@ echo "[**] Performing prerequisite checks"
 GIT="$(prereq git)"
 GREP="$(prereq grep)"
 REALPATH="$(prereq realpath)"
+READLINK="$(prereq readlink)"
+DIRNAME="$(prereq dirname)"
 RM="$(prereq rm)"
 LN="$(prereq ln)"
 
-echo "[**] You have all prerequisites. Press ENTER to continue."
 echo "[>>] git=$GIT"
 echo "[>>] grep=$GREP"
 echo "[>>] realpath=$REALPATH"
+echo "[>>] readlink=$READLINK"
+echo "[>>] dirname=$DIRNAME"
 echo "[>>] rm=$RM"
-echo "[>>" ln=$LN"
+echo "[>>] ln=$LN"
+echo "[**] You have all prerequisites. Press ENTER to continue."
 read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
+
+# Set up initial vars
+SCRIPT=$($READLINK -f "$0")
+DIR=$($DIRNAME "$SCRIPT")
 
 # Grab submodules
 if [ -z "$NO_SUBMODULES" ]; then
@@ -42,7 +48,7 @@ FILES=`$GIT ls-tree --name-only HEAD | $GREP -e '^\.' 2>/dev/null | $GREP -ve '.
 # Let the user know which commands we're running
 echo "[**] About to perform the following commands:"
 for i in $FILES; do
-  SRC="$(realpath $i)"
+  SRC="$($REALPATH $i)"
   DEST=~/"$i"
   echo "[>>] $RM -rf \"$DEST\""
   echo "[>>] $LN -s \"$SRC\" \"$DEST\""
