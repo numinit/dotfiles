@@ -20,7 +20,11 @@ RM="$(prereq rm)"
 LN="$(prereq ln)"
 
 echo "[**] You have all prerequisites. Press ENTER to continue."
-echo "[>>] git=$GIT, grep=$GREP, realpath=$REALPATH, rm=$RM, ln=$LN"
+echo "[>>] git=$GIT"
+echo "[>>] grep=$GREP"
+echo "[>>] realpath=$REALPATH"
+echo "[>>] rm=$RM"
+echo "[>>" ln=$LN"
 read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
 
 # Grab submodules
