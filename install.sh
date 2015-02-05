@@ -14,7 +14,6 @@ prereq () {
 echo "[**] Performing prerequisite checks"
 GIT="$(prereq git)"
 GREP="$(prereq grep)"
-REALPATH="$(prereq realpath)"
 READLINK="$(prereq readlink)"
 DIRNAME="$(prereq dirname)"
 RM="$(prereq rm)"
@@ -22,7 +21,6 @@ LN="$(prereq ln)"
 
 echo "[>>] git=$GIT"
 echo "[>>] grep=$GREP"
-echo "[>>] realpath=$REALPATH"
 echo "[>>] readlink=$READLINK"
 echo "[>>] dirname=$DIRNAME"
 echo "[>>] rm=$RM"
@@ -49,7 +47,7 @@ FILES=`$GIT ls-tree --name-only HEAD | $GREP -e '^\.' 2>/dev/null | $GREP -ve '^
 # Let the user know which commands we're running
 echo "[**] About to perform the following commands:"
 for i in $FILES; do
-  SRC="$($REALPATH $i)"
+  SRC="$($READLINK -f -- $i)"
   DEST=~/"$i"
   echo "[>>] $RM -rf \"$DEST\""
   echo "[>>] $LN -s \"$SRC\" \"$DEST\""
@@ -59,7 +57,7 @@ read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
 
 # Do it
 for i in $FILES; do
-  SRC="$($REALPATH $i)"
+  SRC="$($READLINK -f -- $i)"
   DEST=~/"$i"
   echo "[>>] $SRC => $DEST"
   $RM -rf "$DEST" || { echo >&2 "[!!] Error removing $DEST"; exit 1; }
