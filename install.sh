@@ -15,17 +15,20 @@ prereq () {
 echo "[**] Performing prerequisite checks"
 GIT="$(prereq git)"
 GREP="$(prereq grep)"
+REALPATH="$(prereq realpath)"
+RM="$(prereq rm)"
+LN="$(prereq ln)"
 
 echo "[**] You have all prerequisites. Press ENTER to continue."
-echo "[>>] git=$GIT, grep=$GREP"
+echo "[>>] git=$GIT, grep=$GREP, realpath=$REALPATH, rm=$RM, ln=$LN"
 read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
 
 # Grab submodules
 if [ -z "$NO_SUBMODULES" ]; then
   echo "[**] Initializing submodules"
   $GIT submodule update --init --recursive
-  $GIT submodule foreach --recursive git fetch
-  $GIT submodule foreach git pull --ff-only origin master
+  $GIT submodule foreach --recursive $GIT fetch
+  $GIT submodule foreach $GIT pull --ff-only origin master
 fi
 
 # Find install files
@@ -37,19 +40,19 @@ echo "[**] About to perform the following commands:"
 for i in $FILES; do
   SRC="$(realpath $i)"
   DEST=~/"$i"
-  echo "[>>] rm -rf \"$DEST\""
-  echo "[>>] ln -s \"$SRC\" \"$DEST\""
+  echo "[>>] $RM -rf \"$DEST\""
+  echo "[>>] $LN -s \"$SRC\" \"$DEST\""
 done
 echo "[**] Press ENTER to continue or CTRL+C to abort."
 read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
 
 # Do it
 for i in $FILES; do
-  SRC="$(realpath $i)"
+  SRC="$($REALPATH $i)"
   DEST=~/"$i"
   echo "[>>] $SRC => $DEST"
-  rm -rf "$DEST" || { echo >&2 "[!!] Error removing $DEST"; exit 1; }
-  ln -s "$SRC" "$DEST" || { echo >&2 "[!!] Error symlinking $SRC to $DEST"; exit 1; }
+  $RM -rf "$DEST" || { echo >&2 "[!!] Error removing $DEST"; exit 1; }
+  $LN -s "$SRC" "$DEST" || { echo >&2 "[!!] Error symlinking $SRC to $DEST"; exit 1; }
 done
 cd "$CWD"
 
