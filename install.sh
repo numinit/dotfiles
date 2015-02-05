@@ -43,7 +43,7 @@ fi
 
 # Find install files
 cd "$DIR"
-FILES=`$GIT ls-tree --name-only HEAD | $GREP -e '^\.' 2>/dev/null | $GREP -ve '.git*'`
+FILES=`$GIT ls-tree --name-only HEAD | $GREP -e '^\.' 2>/dev/null | $GREP -ve '^\.git'`
 
 # Let the user know which commands we're running
 echo "[**] About to perform the following commands:"
