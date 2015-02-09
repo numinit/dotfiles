@@ -25,6 +25,11 @@ autocmd BufRead, BufNewFile *.coffee sw=2 ts=2
 :highlight ExtraWhitespace ctermbg=red guibg=red
 :match ExtraWhitespace /\s\+$/
 
+""" markdown
+let g:vim_markdown_no_default_key_mappings=1
+let g:vim_markdown_math=1
+let g:vim_markdown_frontmatter=1
+
 """ clang
 let g:clang_auto_select=1
 let g:clang_complete_auto=1
