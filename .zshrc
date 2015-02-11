@@ -5,11 +5,12 @@
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 if [[ -s "${ZDOTDIR:-$HOME}/.platform" ]]; then
   source "${ZDOTDIR:-$HOME}/.platform"
 fi
 
-# Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
@@ -18,7 +19,11 @@ if [[ -s "${ZDOTDIR:-$HOME}/.aliases" ]]; then
   source "${ZDOTDIR:-$HOME}/.aliases"
 fi
 
-export PATH=~/bin:$PATH
+if [[ -s "${ZDOTDIR:-$HOME}/.path" ]]; then
+  source "${ZDOTDIR:-$HOME}/.path"
+fi
+
+export PATH=~/local/bin:~/local/sbin:$PATH
 
 bindkey -M viins '^r' history-incremental-search-backward
 bindkey -M vicmd '^r' history-incremental-search-backward
