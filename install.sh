@@ -26,7 +26,7 @@ echo "[>>] dirname=$DIRNAME"
 echo "[>>] rm=$RM"
 echo "[>>] ln=$LN"
 echo "[**] You have all prerequisites. Press ENTER to continue."
-read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
+read || { echo >&2 "[!!] User abort."; exit 1; }
 
 # Set up initial vars
 SCRIPT=$($READLINK -f "$0")
@@ -53,7 +53,7 @@ for i in $FILES; do
   echo "[>>] $LN -s \"$SRC\" \"$DEST\""
 done
 echo "[**] Press ENTER to continue or CTRL+C to abort."
-read -t 30 || { echo >&2 "[!!] User abort."; exit 1; }
+read || { echo >&2 "[!!] User abort."; exit 1; }
 
 # Do it
 for i in $FILES; do
