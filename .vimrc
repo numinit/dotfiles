@@ -18,6 +18,9 @@ let g:veloth_transparent = 1
 :set shiftwidth=2
 :set expandtab
 
+""" Backspace
+set backspace=indent,eol,start
+
 """ Auto commands
 autocmd BufRead, BufNewFile *.coffee sw=2 ts=2
 
