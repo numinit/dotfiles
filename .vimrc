@@ -33,6 +33,9 @@ let g:vim_markdown_no_default_key_mappings=1
 let g:vim_markdown_math=1
 let g:vim_markdown_frontmatter=1
 
+"highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+"match OverLength /\%81v.\+/
+
 """ clang
 let g:clang_auto_select=1
 let g:clang_complete_auto=1
@@ -69,6 +72,7 @@ if has("gui_running")
 endif
 
 """ load platform configuration
+let g:clang_library_path="/Library/Developer/CommandLineTools/usr/lib"
 if filereadable("~/.vim_platform")
   :source "~/.vim_platform"
 endif
