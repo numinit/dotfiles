@@ -25,10 +25,14 @@ fi
 
 export PATH=~/local/bin:~/local/sbin:$PATH
 
+if [[ -d "${ZDOTDIR:-$HOME}/.z" ]]; then
+  export _Z_DATA="${ZDOTDIR:-$HOME}/.zdata"
+  source "${ZDOTDIR:-$HOME}/.z/z.sh"
+fi
+
 bindkey -M viins '^r' history-incremental-search-backward
 bindkey -M vicmd '^r' history-incremental-search-backward
 bindkey -M viins "$key_info[Control]A" beginning-of-line
 bindkey -M vicmd "$key_info[Control]A" beginning-of-line
 bindkey -M viins "$key_info[Control]E" end-of-line
 bindkey -M vicmd "$key_info[Control]E" end-of-line
-

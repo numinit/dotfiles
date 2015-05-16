@@ -59,7 +59,7 @@ alias extip='curl ifconfig.me'
 # git aliases
 alias pull='git pull'
 alias push='git push'
-alias commit='git commit -S -a'
+alias commit='git commit -a'
 alias branch='git branch'
 alias rebase='git rebase'
 alias add='git add'

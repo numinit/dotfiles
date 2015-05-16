@@ -14,8 +14,10 @@ let g:veloth_transparent = 1
 :set modelines=5
 
 """ Tabs
-:set tabstop=2
-:set shiftwidth=2
+:set autoindent
+:set tabstop=4
+:set shiftwidth=4
+:set softtabstop=4
 :set expandtab
 
 """ Backspace
@@ -72,7 +74,7 @@ if has("gui_running")
 endif
 
 """ load platform configuration
-let g:clang_library_path="/Library/Developer/CommandLineTools/usr/lib"
+"let g:clang_library_path="/Library/Developer/CommandLineTools/usr/lib"
 if filereadable("~/.vim_platform")
   :source "~/.vim_platform"
 endif
