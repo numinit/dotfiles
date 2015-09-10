@@ -74,7 +74,7 @@ if has("gui_running")
 endif
 
 """ load platform configuration
-"let g:clang_library_path="/Library/Developer/CommandLineTools/usr/lib"
+let g:clang_library_path="/Library/Developer/CommandLineTools/usr/lib"
 if filereadable("~/.vim_platform")
   :source "~/.vim_platform"
 endif
