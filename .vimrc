@@ -20,6 +20,10 @@ let g:veloth_transparent = 1
 :set softtabstop=4
 :set expandtab
 
+""" Wrap
+:set formatoptions+=w
+:set tw=80
+
 """ Backspace
 set backspace=indent,eol,start
 

@@ -37,7 +37,6 @@ if [ -z "$NO_SUBMODULES" ]; then
   echo "[**] Initializing submodules"
   $GIT submodule update --init --recursive
   $GIT submodule foreach --recursive $GIT fetch
-  $GIT submodule foreach $GIT pull --ff-only origin master
 fi
 
 # Find install files
