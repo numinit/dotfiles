@@ -10,19 +10,15 @@ filetype plugin indent on
 :colorscheme veloth
 let g:veloth_transparent = 1
 
-""" Modelines
-:set modelines=5
+""" Some general settings
+set number title ruler laststatus=2 modelines=5 hlsearch
 
 """ Tabs
-:set autoindent
-:set tabstop=4
-:set shiftwidth=4
-:set softtabstop=4
-:set expandtab
-
-""" Wrap
-:set formatoptions+=w
-:set tw=80
+set autoindent
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
 
 """ Backspace
 set backspace=indent,eol,start
@@ -65,20 +61,18 @@ let g:tmuxline_preset = {
       \'y'    : ['%R', '%a'],
       \'z'    : '#H'}
 
-""" Show line numbers
-:set number
+""" General options
 
 """ Terminal color options
 set t_Co=256
 
 """ GUI tweaks: font/transparency
 if has("gui_running")
-  :set guifont="Inconsolata-dz for Powerline:h11"
-  :set transparency=10
+  set guifont="Inconsolata-dz for Powerline:h11"
+  set transparency=10
 endif
 
 """ load platform configuration
-let g:clang_library_path="/Library/Developer/CommandLineTools/usr/lib"
 if filereadable("~/.vim_platform")
   :source "~/.vim_platform"
 endif

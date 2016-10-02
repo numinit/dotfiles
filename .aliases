@@ -33,6 +33,9 @@ alias mkdir='mkdir -p'
 # Always ask
 alias rm='rm -i'
 
+# Always output colors
+alias diff='diff --color=always'
+
 # Some shortcuts for longer commands
 alias weechat='weechat-curses'
 alias irc='weechat'
