@@ -1,45 +1,6 @@
-[submodule ".emacs.d/lisp/auctex"]
-	path = .emacs.d/lisp/auctex
-	url = https://github.com/jwiegley/auctex.git
-[submodule ".emacs.d/lisp/auto-complete"]
-	path = .emacs.d/lisp/auto-complete
-	url = https://github.com/auto-complete/auto-complete.git
-[submodule ".emacs.d/lisp/emacs-rails-reloaded"]
-	path = .emacs.d/lisp/emacs-rails-reloaded
-	url = https://github.com/dima-exe/emacs-rails-reloaded.git
-[submodule ".emacs.d/lisp/exec-path-from-shell"]
-	path = .emacs.d/lisp/exec-path-from-shell
-	url = https://github.com/purcell/exec-path-from-shell.git
-[submodule ".emacs.d/lisp/git-emacs"]
-	path = .emacs.d/lisp/git-emacs
-	url = https://github.com/tsgates/git-emacs.git
-[submodule ".emacs.d/lisp/markdown-mode"]
-	path = .emacs.d/lisp/markdown-mode
-	url = https://github.com/defunkt/markdown-mode.git
 [submodule ".emacs.d/lisp/nxhtml"]
 	path = .emacs.d/lisp/nxhtml
 	url = https://github.com/emacsmirror/nxhtml.git
-[submodule ".emacs.d/lisp/oblivion-emacs"]
-	path = .emacs.d/lisp/oblivion-emacs
-	url = https://github.com/pomeo/oblivion-emacs.git
-[submodule ".emacs.d/lisp/ruby-electric"]
-	path = .emacs.d/lisp/ruby-electric
-	url = https://github.com/qoobaa/ruby-electric.git
-[submodule ".emacs.d/lisp/sunrise-commander"]
-	path = .emacs.d/lisp/sunrise-commander
-	url = https://github.com/escherdragon/sunrise-commander.git
-[submodule ".emacs.d/lisp/wrap-region"]
-	path = .emacs.d/lisp/wrap-region
-	url = https://github.com/rejeep/wrap-region.git
-[submodule ".emacs.d/lisp/popup-el"]
-	path = .emacs.d/lisp/popup-el
-	url = https://github.com/auto-complete/popup-el.git
-[submodule ".emacs.d/lisp/emacs-minimap"]
-	path = .emacs.d/lisp/emacs-minimap
-	url = https://github.com/dustinlacewell/emacs-minimap.git
-[submodule ".emacs.d/lisp/coffee-mode"]
-	path = .emacs.d/lisp/coffee-mode
-	url = https://github.com/defunkt/coffee-mode.git
 [submodule ".vim/bundle/vim-aldmeris"]
 	path = .vim/bundle/vim-aldmeris
 	url = https://github.com/veloce/vim-aldmeris.git
