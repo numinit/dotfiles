@@ -76,3 +76,9 @@
 [submodule ".vim/bundle/vim-verilog"]
 	path = .vim/bundle/vim-verilog
 	url = https://github.com/vhda/verilog_systemverilog.vim
+[submodule ".vim/bundle/vim-nix"]
+	path = .vim/bundle/vim-nix
+	url = https://github.com/LnL7/vim-nix.git
+[submodule ".vim/bundle/vim-typescript"]
+	path = .vim/bundle/vim-typescript
+	url = https://github.com/leafgarland/typescript-vim.git

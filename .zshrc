@@ -1,11 +1,10 @@
 #
 # Executes commands at the start of an interactive session.
 #
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
 
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+if [[ -s /etc/profile ]]; then
+  source /etc/profile
+fi
 
 if [[ -s "${ZDOTDIR:-$HOME}/.platform" ]]; then
   source "${ZDOTDIR:-$HOME}/.platform"
@@ -36,3 +35,4 @@ bindkey -M viins "$key_info[Control]A" beginning-of-line
 bindkey -M vicmd "$key_info[Control]A" beginning-of-line
 bindkey -M viins "$key_info[Control]E" end-of-line
 bindkey -M vicmd "$key_info[Control]E" end-of-line
+
