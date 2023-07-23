@@ -33,7 +33,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        username = (builtins.replaceStrings [ "+" ] [ "-" ]
+        username = (builtins.replacestrings [ "+" ] [ "-" ]
           (string-option.extract "username_" args));
       in {
         packages = rec {
@@ -52,6 +52,9 @@
                 char="''${username:i:1}"
                 if [ "$char" == '-' ]; then
                     char='+'
+                elif [[ ! "$char" =~ ^[A-Za-z0-9_+]$ ]]; then
+                    echo "Your username ('$username') has an invalid character!" >&2
+                    exit 1
                 fi
                 extra_args+=(
                     --override-input
