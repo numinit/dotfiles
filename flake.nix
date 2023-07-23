@@ -33,7 +33,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        username = (builtins.replacestrings [ "+" ] [ "-" ]
+        username = (builtins.replacestrings [ "+" "/" "=" ] [ "-" "." "_" ]
           (string-option.extract "username_" args));
       in {
         packages = rec {
@@ -51,7 +51,11 @@
             for ((i=0;i<''${#username};i++)); do
                 char="''${username:i:1}"
                 if [ "$char" == '-' ]; then
-                    char='@'
+                    char='PLUS'
+                elif [ "$char" == '.' ]; then
+                    char='SLASH'
+                elif [ "$char" == '_' ]; then
+                    char='EQUALS'
                 elif [[ ! "$char" =~ ^[A-Za-z0-9]$ ]]; then
                     echo "Your username ('$username') has an invalid character!" >&2
                     exit 1
