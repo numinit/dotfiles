@@ -33,7 +33,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        username = (builtins.replacestrings [ "+" "/" "=" ] [ "-" "." "_" ]
+        username = (builtins.replaceStrings [ "+" "/" "=" ] [ "-" "." "_" ]
           (string-option.extract "username_" args));
       in {
         packages = rec {
