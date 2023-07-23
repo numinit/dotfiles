@@ -51,8 +51,8 @@
             for ((i=0;i<''${#username};i++)); do
                 char="''${username:i:1}"
                 if [ "$char" == '-' ]; then
-                    char='+'
-                elif [[ ! "$char" =~ ^[A-Za-z0-9_+]$ ]]; then
+                    char='@'
+                elif [[ ! "$char" =~ ^[A-Za-z0-9]$ ]]; then
                     echo "Your username ('$username') has an invalid character!" >&2
                     exit 1
                 fi
