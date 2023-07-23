@@ -1,5 +1,4 @@
-{ config, pkgs, lib, ... }:
-{
+{ config, pkgs, lib, username, ... }: {
   programs.neovim = {
     enable = true;
     vimAlias = true;
@@ -143,9 +142,6 @@
         # Go
         gopls
 
-        # HTML/CSS/JS
-        nodePackages.vscode-langservers-extracted
-
         # JavaScript
         nodePackages.typescript-language-server
 
@@ -199,7 +195,15 @@
       else
         [
 
-        ]);
+        ]) ++ (if username != "nix-on-droid" then
+          [
+            # HTML/CSS/JS
+            nodePackages.vscode-langservers-extracted
+          ]
+        else
+          [
+
+          ]);
 
     extraConfig = ''
       colorscheme catppuccin-macchiato

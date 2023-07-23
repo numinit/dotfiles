@@ -1,8 +1,11 @@
-{ config, pkgs, lib, username, ... }:
+{ config, pkgs, lib, username, homeDirectory, ... }:
 
 {
   home.username = username;
-  home.homeDirectory = "/home/${username}";
+  home.homeDirectory = if homeDirectory == null || homeDirectory == "" then
+    "/home/${username}"
+  else
+    homeDirectory;
   home.stateVersion = "23.05";
 
   programs = {
