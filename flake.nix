@@ -5,8 +5,16 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
 
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-23.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    neovim-flake = {
+      url = "github:numinit/neovim-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     flake-utils.url = "github:numtide/flake-utils";
 
     string-option.url = "github:numinit/string-option";
@@ -95,8 +103,8 @@
     home_63.url = "github:numinit/string-option";
   };
 
-  outputs =
-    { self, nixpkgs, home-manager, flake-utils, string-option, ... }@args:
+  outputs = { self, nixpkgs, home-manager, neovim-flake, flake-utils
+    , string-option, ... }@args:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
@@ -183,6 +191,7 @@
               };
               modules = [
                 { nixpkgs.overlays = [ self.overlays.default ]; }
+                neovim-flake.nixosModules.${system}.hm
                 ./home
                 ./home/workstation.nix
               ];
