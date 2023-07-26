@@ -131,7 +131,7 @@
           dotfiles = pkgs.writeShellScriptBin "dotfiles.sh" ''
             config="$1"
             if [ -z "$config" ]; then
-              config=".#workstation"
+              config=".#roadwarrior"
             else
               config="''${config##*.}"
               config="''${config##.#}"
