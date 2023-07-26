@@ -131,7 +131,11 @@
           dotfiles = pkgs.writeShellScriptBin "dotfiles.sh" ''
             config="$1"
             if [ -z "$config" ]; then
-                config=".#workstation"
+              config=".#workstation"
+            else
+              config="''${config##*.}"
+              config="''${config##.#}"
+              config=".#''$config"
             fi
 
             set -euo pipefail
@@ -183,19 +187,23 @@
                 ''${extra_args[@]+"''${extra_args[@]}"}
           '';
           default = dotfiles;
-          homeConfigurations = {
-            workstation = home-manager.lib.homeManagerConfiguration {
-              inherit pkgs;
-              extraSpecialArgs = {
-                inherit nixpkgs system username homeDirectory;
+          homeConfigurations = let
+            mkConfig = configModule:
+              home-manager.lib.homeManagerConfiguration {
+                inherit pkgs;
+                extraSpecialArgs = {
+                  inherit nixpkgs system username homeDirectory;
+                };
+                modules = [
+                  { nixpkgs.overlays = [ self.overlays.default ]; }
+                  neovim-flake.nixosModules.${system}.hm
+                  ./home
+                  configModule
+                ];
               };
-              modules = [
-                { nixpkgs.overlays = [ self.overlays.default ]; }
-                neovim-flake.nixosModules.${system}.hm
-                ./home
-                ./home/workstation.nix
-              ];
-            };
+          in {
+            workstation = mkConfig ./home/workstation.nix;
+            roadwarrior = mkConfig ./home/roadwarrior.nix;
           };
         };
         apps = rec {

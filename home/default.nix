@@ -15,5 +15,5 @@
 
   xsession.enable = true;
 
-  imports = [ ./bash ./tmux ./nvim ];
+  imports = [ ./bash ./tmux ./nvim ./z ];
 }
