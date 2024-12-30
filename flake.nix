@@ -3,15 +3,15 @@
     "Dotfiles for numinit. There are many like it, but this one is mine.";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim-flake = {
-      url = "github:numinit/neovim-flake";
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -103,29 +103,13 @@
     home_63.url = "github:numinit/string-option";
   };
 
-  outputs = { self, nixpkgs, home-manager, neovim-flake, flake-utils
+  outputs = { self, nixpkgs, home-manager, nixvim, flake-utils
     , string-option, ... }@args:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
         username = string-option.extract "username_" args;
         homeDirectory = string-option.extract "home_" args;
-
-        # Currently unused.
-        genOptions = prefix: count:
-          let
-            pad = if count <= 10 then
-              ""
-            else if count <= 100 then
-              "0"
-            else if count <= 1000 then
-              "00"
-            else
-              builtins.throw "String too large!";
-          in builtins.listToAttrs (builtins.genList (x: {
-            name = "${prefix}${pad}${builtins.toString x}";
-            value = { url = "github:numinit/string-option"; };
-          }));
       in {
         packages = rec {
           dotfiles = pkgs.writeShellScriptBin "dotfiles.sh" ''
@@ -196,7 +180,7 @@
                 };
                 modules = [
                   { nixpkgs.overlays = [ self.overlays.default ]; }
-                  neovim-flake.nixosModules.${system}.hm
+                  nixvim.homeManagerModules.nixvim
                   ./home
                   configModule
                 ];

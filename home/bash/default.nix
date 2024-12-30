@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }: {
   programs.bash = {
     enable = true;
+    historyControl = [ "ignoredups" "ignorespace" ];
     initExtra = ''
       if [ "$IN_NIX_SHELL" == "pure" ]; then
           if [ -x "$HOME/.nix-profile/bin/powerline-go" ]; then
