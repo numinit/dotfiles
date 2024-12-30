@@ -14,7 +14,18 @@
         keymaps.addFile = "<leader>a";
       };
 
+      cmp = {
+        enable = true;
+        autoEnableSources = true;
+        settings.sources = [
+          { name = "nvim_lsp"; }
+          { name = "path"; }
+          { name = "buffer"; }
+        ];
+      };
+
       lsp = {
+        enable = true;
         keymaps = {
           silent = true;
           diagnostic = {
@@ -43,7 +54,7 @@
       {
         event = "FileType";
         pattern = "nix";
-        command = "setlocal tabstop=2 shiftwidth=2";
+        command = "setlocal tabstop=2 shiftwidth=2 expandtab";
       }
     ];
   };
