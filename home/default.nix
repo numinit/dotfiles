@@ -6,14 +6,12 @@
     "/home/${username}"
   else
     homeDirectory;
-  home.stateVersion = "23.05";
+  home.stateVersion = "24.11";
 
   programs = {
     home-manager.enable = true;
     command-not-found.enable = true;
   };
-
-  xsession.enable = true;
 
   imports = [ ./bash ./tmux ./nvim ./z ];
 }
