@@ -4,8 +4,29 @@
     enable = true;
     viAlias = true;
     vimAlias = true;
+    luaLoader.enable = true;
 
     colorschemes.catppuccin.enable = true;
+
+    opts = {
+      virtualedit = "block";
+      cursorline = true;
+
+      number = true;
+
+      hlsearch = true;
+      incsearch = true;
+
+      splitbelow = true;
+      splitright = true;
+
+      # Enable ignorecase + smartcase for better searching
+      ignorecase = true;
+      smartcase = true; # Don't ignore case with capitals
+
+      encoding = "utf-8";
+      fileencoding = "utf-8";
+    };
 
     plugins = {
       telescope.enable = true;
@@ -13,10 +34,16 @@
         enable = true;
         keymaps.addFile = "<leader>a";
       };
+      lazy.enable = true;
 
       cmp = {
         enable = true;
         autoEnableSources = true;
+        settings.mapping = {
+          "<CR>" = "cmp.mapping.confirm({ select = true })";
+          "<C-p>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+          "<C-n>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+        };
         settings.sources = [
           { name = "nvim_lsp"; }
           { name = "path"; }
@@ -27,7 +54,7 @@
       lsp = {
         enable = true;
         keymaps = {
-          silent = true;
+        silent = true;
           diagnostic = {
             "<leader>k" = "goto_prev";
             "<leader>j" = "goto_next";
