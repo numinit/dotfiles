@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ ... }:
 
 {
   programs.git = {
@@ -6,7 +6,7 @@
     userName = "Morgan Jones";
     userEmail = "me" + "@" + "numin.it";
     signing = {
-      key = "F819F1AF2FC1C1FF";
+      key = "5c3eb94d198f1491";
       signByDefault = true;
     };
     extraConfig.core.editor = "vim";
