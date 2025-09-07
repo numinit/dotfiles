@@ -32,7 +32,6 @@
       telescope.enable = true;
       harpoon = {
         enable = true;
-        keymaps.addFile = "<leader>a";
       };
       lazy.enable = true;
 
@@ -69,6 +68,11 @@
           bashls.enable = true;
           clangd.enable = true;
           nil_ls.enable = true;
+          rust_analyzer = {
+            enable = true;
+            installRustc = true;
+            installCargo = true;
+          };
         };
       };
 
