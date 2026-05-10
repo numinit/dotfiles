@@ -7,11 +7,18 @@
     newSession = true;
     keyMode = "vi";
     plugins = with pkgs.tmuxPlugins; [
-      onedark-theme
       cpu
       net-speed
       sidebar
       better-mouse-mode
+      {
+        plugin = catppuccin;
+        extraConfig = ''
+          set -g @catppuccin_flavor 'mocha'
+          set -g @catppuccin_window_status_style 'rounded'
+          set -g @catppuccin_status_background 'default'
+        '';
+      }
     ];
     extraConfig = ''
       # split windows like vim
@@ -26,31 +33,26 @@
       bind l select-pane -R
 
       # resize panes like vim
-      # feel free to change the "1" to however many lines you want to resize by, only
-      # one at a time can be slow
       bind < resize-pane -L 1
       bind > resize-pane -R 1
       bind - resize-pane -D 1
       bind + resize-pane -U 1
 
-      # bind : to command-prompt like vim
-      # this is the default in tmux already
       bind : command-prompt
 
-      # vi-style controls for copy mode
       setw -g mode-keys vi
 
-      # Default terminal
       set -g default-terminal "screen-256color"
 
-      set -g @tmux_power_date_icon ' ' # set it to a blank will disable the icon
-      set -g @tmux_power_time_icon '🕘' # emoji can be used if your terminal supports
-      set -g @tmux_power_user_icon ' '
-      set -g @tmux_power_session_icon ' '
-      set -g @tmux_power_upload_speed_icon '↑'
-      set -g @tmux_power_download_speed_icon '↓'
-      #set -g @tmux_power_left_arrow_icon '<'
-      #set -g @tmux_power_right_arrow_icon '>'
+      # Status line — assembled after catppuccin has loaded.
+      set -g status-left-length 100
+      set -g status-right-length 200
+      set -g status-left  "#{E:@catppuccin_status_session}"
+      set -g status-right "#{E:@catppuccin_status_user}"
+      set -agF status-right "#{E:@catppuccin_status_directory}"
+      set -agF status-right "#{E:@catppuccin_status_cpu}"
+      set -ag  status-right "#[fg=#{@thm_crust},bg=#{@thm_sapphire}] ↑#{upload_speed} ↓#{download_speed} "
+      set -agF status-right "#{E:@catppuccin_status_date_time}"
     '';
   };
 }
