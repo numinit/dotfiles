@@ -7,12 +7,30 @@
 {
   programs.bash = {
     enable = true;
+    enableCompletion = true;
     historyControl = [
       "ignoredups"
       "ignorespace"
+      "erasedups"
+    ];
+    historyIgnore = [
+      "ls"
+      "ll"
+      "la"
+      "l"
+      "cd"
+      "pwd"
+      "clear"
+      "c"
+      "history"
+      "exit"
+      "bg"
+      "fg"
+      "jobs"
     ];
     historySize = 1000000;
     historyFileSize = 10000000;
+    sessionVariables.HISTTIMEFORMAT = "%F %T  ";
     initExtra = ''
       if [ "$IN_NIX_SHELL" == "pure" ]; then
           if [ -x "$HOME/.nix-profile/bin/powerline-go" ]; then
@@ -32,6 +50,11 @@
 
           #set "?"
       }
+
+      # Flush this session's history to disk on every prompt, so concurrent
+      # shells (tmux panes, etc.) can see each other's commands live and a
+      # crashed shell doesn't lose its session history.
+      PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 
       if [ "$TERM" != "linux" ]; then
           PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
@@ -66,6 +89,21 @@
       alias mkdir='mkdir -p'
     '';
   };
+  programs.fzf = {
+    enable = true;
+    enableBashIntegration = true;
+    defaultOptions = [
+      "--height 40%"
+      "--layout=reverse"
+      "--border"
+    ];
+  };
+
+  programs.carapace = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+
   programs.powerline-go = {
     enable = true;
     modules = [
