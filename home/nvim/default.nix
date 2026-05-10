@@ -63,6 +63,16 @@
       rustaceanvim.enable = true;
       web-devicons.enable = true;
 
+      jdtls = {
+        enable = true;
+        settings.root_dir.__raw = ''
+          vim.fs.dirname(vim.fs.find(
+            { "gradlew", "mvnw", "build.gradle", "build.gradle.kts", "pom.xml", ".git" },
+            { upward = true }
+          )[1])
+        '';
+      };
+
       treesitter = {
         enable = true;
         settings = {
@@ -136,14 +146,33 @@
         servers = {
           bashls.enable = true;
           clangd.enable = true;
+          cmake.enable = true;
           nil_ls.enable = true;
           lua_ls.enable = true;
-          rust_analyzer = {
-            enable = false;
-            installRustc = true;
-            installCargo = true;
-            installRustfmt = true;
+          ts_ls.enable = true;
+          kotlin_language_server.enable = true;
+          html.enable = true;
+          cssls.enable = true;
+          jsonls.enable = true;
+          marksman.enable = true;
+          eslint.enable = true;
+          basedpyright.enable = true;
+          ruff.enable = true;
+          ruby_lsp.enable = true;
+          gopls.enable = true;
+          verible.enable = true;
+          emmet_language_server = {
+            enable = true;
+            filetypes = [
+              "html"
+              "css"
+              "scss"
+              "javascriptreact"
+              "typescriptreact"
+            ];
           };
+          # Rust is handled by rustaceanvim, Java by nvim-jdtls.
+          rust_analyzer.enable = false;
         };
       };
 
@@ -162,8 +191,28 @@
             lua = [ "stylua" ];
             c = [ "clang_format" ];
             cpp = [ "clang_format" ];
-            json = [ "jq" ];
             yaml = [ "yamlfmt" ];
+            javascript = [ "prettierd" ];
+            javascriptreact = [ "prettierd" ];
+            typescript = [ "prettierd" ];
+            typescriptreact = [ "prettierd" ];
+            html = [ "prettierd" ];
+            css = [ "prettierd" ];
+            scss = [ "prettierd" ];
+            json = [ "prettierd" ];
+            jsonc = [ "prettierd" ];
+            markdown = [ "prettierd" ];
+            java = [ "google-java-format" ];
+            kotlin = [ "ktlint" ];
+            python = [ "ruff_format" ];
+            ruby = [ "rubocop" ];
+            go = [
+              "goimports"
+              "gofumpt"
+            ];
+            verilog = [ "verible" ];
+            systemverilog = [ "verible" ];
+            cmake = [ "cmake_format" ];
             "_" = [
               "trim_whitespace"
               "trim_newlines"
