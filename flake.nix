@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,8 +15,6 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    flake-utils.url = "github:numtide/flake-utils";
 
     string-option.url = "github:numinit/string-option";
 
@@ -103,117 +103,168 @@
   };
 
   outputs =
-    {
+    inputs@{
       self,
       nixpkgs,
+      flake-parts,
       home-manager,
       nixvim,
-      flake-utils,
       string-option,
       ...
-    }@args:
-    flake-utils.lib.eachDefaultSystem (
-      system:
+    }:
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      { withSystem, lib, ... }:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
-        username = string-option.extract "username_" args;
-        homeDirectory = string-option.extract "home_" args;
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+          "x86_64-darwin"
+          "aarch64-darwin"
+        ];
       in
       {
-        packages = rec {
-          dotfiles = pkgs.writeShellScriptBin "dotfiles.sh" ''
-            config="$1"
-            if [ -z "$config" ]; then
-              config=".#roadwarrior"
-            else
-              config="''${config##*.}"
-              config="''${config##.#}"
-              config=".#''$config"
-            fi
+        inherit systems;
 
-            set -euo pipefail
+        perSystem =
+          { system, ... }:
+          let
+            pkgs = import nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = [ self.overlays.default ];
+            };
 
-            extra_args=()
-
-            # Adds extra args. $1 is the prefix, $2 is the value, and $3 is
-            # the maximal allowable length. The globally allowed max length
-            # is 1000 characters.
-            add_extra_args() {
-              local prefix="$1"
-              local value="$2"
-              local maxlen="$3"
-              local format=""
-
-              if [ "$maxlen" -le 10 ]; then
-                format='%d'
-              elif [ "$maxlen" -le 100 ]; then
-                format='%02d'
-              elif [ "$maxlen" -le 1000 ]; then
-                format='%03d'
+            dotfiles = pkgs.writeShellScriptBin "dotfiles.sh" ''
+              config="$1"
+              if [ -z "$config" ]; then
+                config=".#roadwarrior"
               else
-                echo "max length $maxlen was too large" >&2
-                return 1
+                config="''${config##*.}"
+                config="''${config##.#}"
+                config=".#''$config"
               fi
 
-              if [ "''${#value}" -gt "$maxlen" ]; then
-                echo "value '$value' was too long (max: $maxlen)" >&2
-                return 1
-              fi
+              set -euo pipefail
 
-              for ((i=0;i<''${#value};i++)); do
-                  local char="''${value:i:1}"
-                  extra_args+=(
-                      --override-input
-                      "''${prefix}$(printf "$format" "$i")"
-                      "github:numinit/string-option/$(printf '0x%x' "'$char")"
-                  )
-              done
-            }
+              extra_args=()
 
-            add_extra_args 'username_' "$(whoami)" 16
-            add_extra_args 'home_' "$HOME" 64
+              # Adds extra args. $1 is the prefix, $2 is the value, and $3 is
+              # the maximal allowable length. The globally allowed max length
+              # is 1000 characters.
+              add_extra_args() {
+                local prefix="$1"
+                local value="$2"
+                local maxlen="$3"
+                local format=""
 
-            cd "${self}" && exec ${home-manager.packages.${system}.default}/bin/home-manager switch \
-                --flake "''${config}" \
-                ''${extra_args[@]+"''${extra_args[@]}"}
-          '';
-          default = dotfiles;
+                if [ "$maxlen" -le 10 ]; then
+                  format='%d'
+                elif [ "$maxlen" -le 100 ]; then
+                  format='%02d'
+                elif [ "$maxlen" -le 1000 ]; then
+                  format='%03d'
+                else
+                  echo "max length $maxlen was too large" >&2
+                  return 1
+                fi
+
+                if [ "''${#value}" -gt "$maxlen" ]; then
+                  echo "value '$value' was too long (max: $maxlen)" >&2
+                  return 1
+                fi
+
+                for ((i=0;i<''${#value};i++)); do
+                    local char="''${value:i:1}"
+                    extra_args+=(
+                        --override-input
+                        "''${prefix}$(printf "$format" "$i")"
+                        "github:numinit/string-option/$(printf '0x%x' "'$char")"
+                    )
+                done
+              }
+
+              add_extra_args 'username_' "$(whoami)" 16
+              add_extra_args 'home_' "$HOME" 64
+
+              # Configurations are exposed as `homeConfigurations.<name>-<system>`.
+              # If the caller already specified an arch suffix, honor it; otherwise
+              # append the system this script was built for (the running host).
+              name="''${config#.#}"
+              case "$name" in
+                *-x86_64-linux|*-aarch64-linux|*-x86_64-darwin|*-aarch64-darwin)
+                  flake_target=".#$name"
+                  ;;
+                *)
+                  flake_target=".#$name-${system}"
+                  ;;
+              esac
+
+              cd "${self}" && exec ${home-manager.packages.${system}.default}/bin/home-manager switch \
+                  --flake "$flake_target" \
+                  ''${extra_args[@]+"''${extra_args[@]}"}
+            '';
+          in
+          {
+            _module.args.pkgs = pkgs;
+
+            packages = {
+              inherit dotfiles;
+              default = dotfiles;
+            };
+
+            apps.default = {
+              type = "app";
+              program = "${dotfiles}/bin/dotfiles.sh";
+            };
+          };
+
+        flake = {
+          overlays.default = _final: _prev: {
+            # nop for now
+          };
+
+          # home-manager resolves `--flake .#<name>` to `homeConfigurations.<name>`,
+          # so multi-system support is expressed as flat `<name>-<system>` keys.
+          # The dotfiles.sh script appends the current arch automatically.
           homeConfigurations =
             let
-              mkConfig =
-                configModule:
-                home-manager.lib.homeManagerConfiguration {
-                  inherit pkgs;
-                  extraSpecialArgs = {
-                    inherit
-                      nixpkgs
-                      system
-                      username
-                      homeDirectory
-                      ;
-                  };
-                  modules = [
-                    { nixpkgs.overlays = [ self.overlays.default ]; }
-                    nixvim.homeManagerModules.nixvim
-                    ./home
-                    configModule
-                  ];
-                };
+              username = string-option.extract "username_" inputs;
+              homeDirectory = string-option.extract "home_" inputs;
+              configs = {
+                workstation = ./home/workstation.nix;
+                roadwarrior = ./home/roadwarrior.nix;
+              };
             in
-            {
-              workstation = mkConfig ./home/workstation.nix;
-              roadwarrior = mkConfig ./home/roadwarrior.nix;
-            };
-        };
-        apps = rec {
-          dotfiles = flake-utils.lib.mkApp { drv = self.packages.${system}.dotfiles; };
-          default = dotfiles;
+            lib.listToAttrs (
+              lib.concatMap (
+                system:
+                withSystem system (
+                  { pkgs, ... }:
+                  lib.mapAttrsToList (
+                    name: configModule:
+                    lib.nameValuePair "${name}-${system}" (
+                      home-manager.lib.homeManagerConfiguration {
+                        inherit pkgs;
+                        extraSpecialArgs = {
+                          inherit
+                            nixpkgs
+                            system
+                            username
+                            homeDirectory
+                            ;
+                        };
+                        modules = [
+                          nixvim.homeModules.nixvim
+                          ./home
+                          configModule
+                        ];
+                      }
+                    )
+                  ) configs
+                )
+              ) systems
+            );
         };
       }
-    )
-    // {
-      overlays.default = final: prev: {
-        # nop for now
-      };
-    };
+    );
 }
