@@ -5,7 +5,9 @@
     enable = true;
     enableAliases = true;
     options = [
-      "enhanced" "once" "fzf"
+      "enhanced"
+      "once"
+      "fzf"
     ];
   };
 }

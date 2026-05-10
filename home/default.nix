@@ -1,11 +1,16 @@
-{ config, pkgs, lib, username, homeDirectory, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  username,
+  homeDirectory,
+  ...
+}:
 
 {
   home.username = username;
-  home.homeDirectory = if homeDirectory == null || homeDirectory == "" then
-    "/home/${username}"
-  else
-    homeDirectory;
+  home.homeDirectory =
+    if homeDirectory == null || homeDirectory == "" then "/home/${username}" else homeDirectory;
   home.stateVersion = "24.11";
 
   programs = {
@@ -13,5 +18,10 @@
     command-not-found.enable = true;
   };
 
-  imports = [ ./bash ./tmux ./nvim ./z ];
+  imports = [
+    ./bash
+    ./tmux
+    ./nvim
+    ./z
+  ];
 }

@@ -101,7 +101,12 @@
             ghost_text.enabled = true;
           };
           signature.enabled = true;
-          sources.default = [ "lsp" "path" "snippets" "buffer" ];
+          sources.default = [
+            "lsp"
+            "path"
+            "snippets"
+            "buffer"
+          ];
         };
       };
 
@@ -159,7 +164,10 @@
             cpp = [ "clang_format" ];
             json = [ "jq" ];
             yaml = [ "yamlfmt" ];
-            "_" = [ "trim_whitespace" "trim_newlines" ];
+            "_" = [
+              "trim_whitespace"
+              "trim_newlines"
+            ];
           };
         };
       };

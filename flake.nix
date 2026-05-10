@@ -1,6 +1,5 @@
 {
-  description =
-    "Dotfiles for numinit. There are many like it, but this one is mine.";
+  description = "Dotfiles for numinit. There are many like it, but this one is mine.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -103,14 +102,24 @@
     home_63.url = "github:numinit/string-option";
   };
 
-  outputs = { self, nixpkgs, home-manager, nixvim, flake-utils
-    , string-option, ... }@args:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      nixvim,
+      flake-utils,
+      string-option,
+      ...
+    }@args:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
         username = string-option.extract "username_" args;
         homeDirectory = string-option.extract "home_" args;
-      in {
+      in
+      {
         packages = rec {
           dotfiles = pkgs.writeShellScriptBin "dotfiles.sh" ''
             config="$1"
@@ -164,41 +173,47 @@
             add_extra_args 'username_' "$(whoami)" 16
             add_extra_args 'home_' "$HOME" 64
 
-            cd "${self}" && exec ${
-              home-manager.packages.${system}.default
-            }/bin/home-manager switch \
+            cd "${self}" && exec ${home-manager.packages.${system}.default}/bin/home-manager switch \
                 --flake "''${config}" \
                 ''${extra_args[@]+"''${extra_args[@]}"}
           '';
           default = dotfiles;
-          homeConfigurations = let
-            mkConfig = configModule:
-              home-manager.lib.homeManagerConfiguration {
-                inherit pkgs;
-                extraSpecialArgs = {
-                  inherit nixpkgs system username homeDirectory;
+          homeConfigurations =
+            let
+              mkConfig =
+                configModule:
+                home-manager.lib.homeManagerConfiguration {
+                  inherit pkgs;
+                  extraSpecialArgs = {
+                    inherit
+                      nixpkgs
+                      system
+                      username
+                      homeDirectory
+                      ;
+                  };
+                  modules = [
+                    { nixpkgs.overlays = [ self.overlays.default ]; }
+                    nixvim.homeManagerModules.nixvim
+                    ./home
+                    configModule
+                  ];
                 };
-                modules = [
-                  { nixpkgs.overlays = [ self.overlays.default ]; }
-                  nixvim.homeManagerModules.nixvim
-                  ./home
-                  configModule
-                ];
-              };
-          in {
-            workstation = mkConfig ./home/workstation.nix;
-            roadwarrior = mkConfig ./home/roadwarrior.nix;
-          };
+            in
+            {
+              workstation = mkConfig ./home/workstation.nix;
+              roadwarrior = mkConfig ./home/roadwarrior.nix;
+            };
         };
         apps = rec {
-          dotfiles =
-            flake-utils.lib.mkApp { drv = self.packages.${system}.dotfiles; };
+          dotfiles = flake-utils.lib.mkApp { drv = self.packages.${system}.dotfiles; };
           default = dotfiles;
         };
-      }) // {
-        overlays.default = final: prev:
-          {
-            # nop for now
-          };
+      }
+    )
+    // {
+      overlays.default = final: prev: {
+        # nop for now
       };
+    };
 }
