@@ -13,6 +13,7 @@
       cursorline = true;
 
       number = true;
+      relativenumber = true;
       signcolumn = "yes";
 
       hlsearch = true;
@@ -28,6 +29,25 @@
       fileencoding = "utf-8";
 
       updatetime = 250;
+      timeoutlen = 400;
+      scrolloff = 6;
+      sidescrolloff = 8;
+
+      undofile = true;
+      confirm = true;
+      mouse = "a";
+
+      foldcolumn = "1";
+      foldlevel = 99;
+      foldlevelstart = 99;
+      foldenable = true;
+      fillchars = {
+        eob = " ";
+        fold = " ";
+        foldopen = "▾";
+        foldclose = "▸";
+        foldsep = "│";
+      };
     };
 
     diagnostic.settings = {
@@ -48,6 +68,25 @@
         settings = {
           highlight.enable = true;
           indent.enable = true;
+          incremental_selection.enable = true;
+        };
+      };
+
+      treesitter-textobjects = {
+        enable = true;
+        select = {
+          enable = true;
+          lookahead = true;
+          keymaps = {
+            "af" = "@function.outer";
+            "if" = "@function.inner";
+            "ac" = "@class.outer";
+            "ic" = "@class.inner";
+            "ab" = "@block.outer";
+            "ib" = "@block.inner";
+            "aa" = "@parameter.outer";
+            "ia" = "@parameter.inner";
+          };
         };
       };
 
@@ -59,6 +98,7 @@
           completion = {
             documentation.auto_show = true;
             list.selection.preselect = true;
+            ghost_text.enabled = true;
           };
           signature.enabled = true;
           sources.default = [ "lsp" "path" "snippets" "buffer" ];
@@ -92,6 +132,7 @@
           bashls.enable = true;
           clangd.enable = true;
           nil_ls.enable = true;
+          lua_ls.enable = true;
           rust_analyzer = {
             enable = false;
             installRustc = true;
@@ -101,16 +142,92 @@
         };
       };
 
+      conform-nvim = {
+        enable = true;
+        autoInstall.enable = true;
+        settings = {
+          format_on_save = {
+            timeout_ms = 2000;
+            lsp_format = "fallback";
+          };
+          formatters_by_ft = {
+            nix = [ "nixfmt" ];
+            sh = [ "shfmt" ];
+            bash = [ "shfmt" ];
+            lua = [ "stylua" ];
+            c = [ "clang_format" ];
+            cpp = [ "clang_format" ];
+            json = [ "jq" ];
+            yaml = [ "yamlfmt" ];
+            "_" = [ "trim_whitespace" "trim_newlines" ];
+          };
+        };
+      };
+
       lualine.enable = true;
+      which-key.enable = true;
+
+      gitsigns = {
+        enable = true;
+        settings = {
+          signs = {
+            add.text = "▎";
+            change.text = "▎";
+            delete.text = "";
+            topdelete.text = "";
+            changedelete.text = "▎";
+            untracked.text = "▎";
+          };
+          current_line_blame = true;
+          current_line_blame_opts.delay = 500;
+        };
+      };
+
+      todo-comments.enable = true;
+      trouble.enable = true;
+      fidget.enable = true;
+      notify.enable = true;
+      colorizer.enable = true;
+      rainbow-delimiters.enable = true;
+      nvim-ufo.enable = true;
+      oil.enable = true;
+
+      flash = {
+        enable = true;
+        settings.modes.search.enabled = false;
+      };
+
+      mini = {
+        enable = true;
+        modules = {
+          ai = { };
+          surround = { };
+          pairs = { };
+          indentscope = {
+            symbol = "│";
+            options.try_as_border = true;
+          };
+          move = { };
+          bracketed = { };
+          trailspace = { };
+        };
+      };
     };
 
-    highlight.ExtraWhitespace.bg = "red";
-    match.ExtraWhitespace = "\\s\\+$";
     autoCmd = [
       {
         event = "FileType";
         pattern = "nix";
         command = "setlocal tabstop=2 shiftwidth=2 expandtab";
+      }
+      {
+        event = "TextYankPost";
+        pattern = "*";
+        callback.__raw = ''
+          function()
+            vim.hl.on_yank({ timeout = 200 })
+          end
+        '';
       }
     ];
   };
