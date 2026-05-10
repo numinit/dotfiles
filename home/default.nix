@@ -18,6 +18,10 @@
     command-not-found.enable = true;
   };
 
+  home.packages = with pkgs; [
+    claude-code
+  ];
+
   imports = [
     ./bash
     ./tmux

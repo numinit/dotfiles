@@ -6,6 +6,10 @@
     vimAlias = true;
     luaLoader.enable = true;
 
+    # Override nixvim's internal pkgs lookup for unfree deps so they pick up
+    # the host pkgs (which has allowUnfree configured).
+    dependencies.claude-code.package = pkgs.claude-code;
+
     colorschemes.catppuccin.enable = true;
 
     opts = {
@@ -62,6 +66,7 @@
       harpoon.enable = true;
       rustaceanvim.enable = true;
       web-devicons.enable = true;
+      claude-code.enable = true;
 
       jdtls = {
         enable = true;
@@ -84,7 +89,7 @@
 
       treesitter-textobjects = {
         enable = true;
-        select = {
+        settings.select = {
           enable = true;
           lookahead = true;
           keymaps = {
