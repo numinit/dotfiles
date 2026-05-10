@@ -3,6 +3,6 @@
 {
   programs.git = {
     enable = true;
-    extraConfig.core.editor = "vim";
+    settings.core.editor = "vim";
   };
 }

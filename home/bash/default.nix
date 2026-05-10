@@ -2,6 +2,8 @@
   programs.bash = {
     enable = true;
     historyControl = [ "ignoredups" "ignorespace" ];
+    historySize = 1000000;
+    historyFileSize = 10000000;
     initExtra = ''
       if [ "$IN_NIX_SHELL" == "pure" ]; then
           if [ -x "$HOME/.nix-profile/bin/powerline-go" ]; then
