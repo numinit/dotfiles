@@ -1,13 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  programs.z-lua = {
+  programs.zoxide = {
     enable = true;
-    enableAliases = true;
-    options = [
-      "enhanced"
-      "once"
-      "fzf"
-    ];
+    enableBashIntegration = true;
+    options = [ "--cmd z" ];
   };
 }

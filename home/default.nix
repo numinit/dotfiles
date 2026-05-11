@@ -16,6 +16,21 @@
   programs = {
     home-manager.enable = true;
     command-not-found.enable = true;
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options = {
+        navigate = true;
+        line-numbers = true;
+        side-by-side = true;
+      };
+    };
   };
 
   home.packages = with pkgs; [
