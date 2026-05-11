@@ -29,6 +29,11 @@
       ignorecase = true;
       smartcase = true;
 
+      expandtab = true;
+      tabstop = 2;
+      shiftwidth = 2;
+      softtabstop = 2;
+
       encoding = "utf-8";
       fileencoding = "utf-8";
 
@@ -64,6 +69,7 @@
     plugins = {
       telescope.enable = true;
       harpoon.enable = true;
+      sleuth.enable = true;
       rustaceanvim.enable = true;
       web-devicons.enable = true;
       claude-code.enable = true;
@@ -279,8 +285,20 @@
     autoCmd = [
       {
         event = "FileType";
-        pattern = "nix";
-        command = "setlocal tabstop=2 shiftwidth=2 expandtab";
+        pattern = [
+          "go"
+          "make"
+        ];
+        command = "setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=0";
+      }
+      {
+        event = "FileType";
+        pattern = [
+          "python"
+          "java"
+          "kotlin"
+        ];
+        command = "setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4";
       }
       {
         event = "TextYankPost";
