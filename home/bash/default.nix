@@ -55,8 +55,10 @@
       mkdir = "mkdir -p";
     };
     initExtra = ''
-      # powerline-go is only on PATH inside pure nix-shells; alias it back in
-      # so the prompt function below still works.
+      # powerline-go is only on PATH inside pure nix-shells; alias it so manual
+      # invocations still work. The prompt function is installed by the
+      # programs.powerline-go module below (with absolute path), so it doesn't
+      # need this alias.
       if [ "$IN_NIX_SHELL" == "pure" ]; then
           if [ -x "$HOME/.nix-profile/bin/powerline-go" ]; then
               alias powerline-go="$HOME/.nix-profile/bin/powerline-go"
@@ -65,18 +67,13 @@
           fi
       fi
 
-      function _update_ps1() {
-          PS1="$(powerline-go -error $? -jobs $(jobs -p | wc -l))"
-      }
-
       # Flush this session's history to disk on every prompt, so concurrent
       # shells (tmux panes, etc.) can see each other's commands live and a
       # crashed shell doesn't lose its session history.
-      PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
-
-      if [ "$TERM" != "linux" ]; then
-          PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
-      fi
+      # Idempotent join with `''${...:+;$...}` avoids trailing semicolons that
+      # would later collide with zoxide/direnv hooks (bash sees `;;` as a
+      # case-statement terminator).
+      PROMPT_COMMAND="history -a''${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
     '';
   };
   programs.fzf = {
