@@ -191,10 +191,6 @@
         enable = true;
         autoInstall.enable = true;
         settings = {
-          format_on_save = {
-            timeout_ms = 2000;
-            lsp_format = "fallback";
-          };
           formatters_by_ft = {
             nix = [ "nixfmt" ];
             sh = [ "shfmt" ];
@@ -228,6 +224,36 @@
               "trim_whitespace"
               "trim_newlines"
             ];
+          };
+          formatters = {
+            clang_format.condition.__raw = ''
+              function(_, ctx)
+                return vim.fs.root(ctx.filename, ".clang-format") ~= nil
+              end
+            '';
+            prettierd.condition.__raw = ''
+              function(_, ctx)
+                return vim.fs.root(ctx.filename, {
+                  ".prettierrc",
+                  ".prettierrc.json",
+                  ".prettierrc.yaml",
+                  ".prettierrc.yml",
+                  ".prettierrc.json5",
+                  ".prettierrc.js",
+                  ".prettierrc.cjs",
+                  ".prettierrc.mjs",
+                  ".prettierrc.toml",
+                  "prettier.config.js",
+                  "prettier.config.cjs",
+                  "prettier.config.mjs",
+                }) ~= nil
+              end
+            '';
+            stylua.condition.__raw = ''
+              function(_, ctx)
+                return vim.fs.root(ctx.filename, { "stylua.toml", ".stylua.toml" }) ~= nil
+              end
+            '';
           };
         };
       };
@@ -297,6 +323,8 @@
           "python"
           "java"
           "kotlin"
+          "c"
+          "cpp"
         ];
         command = "setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4";
       }
@@ -306,6 +334,48 @@
         callback.__raw = ''
           function()
             vim.hl.on_yank({ timeout = 200 })
+          end
+        '';
+      }
+      {
+        event = "BufWritePre";
+        pattern = "*";
+        callback.__raw = ''
+          function(args)
+            local conform = require("conform")
+            local ok_gs, gs = pcall(require, "gitsigns")
+            local hunks = ok_gs and gs.get_hunks(args.buf) or nil
+
+            -- Untracked buffer: format the whole thing.
+            if hunks == nil then
+              conform.format({
+                bufnr = args.buf,
+                timeout_ms = 2000,
+                lsp_format = "fallback",
+              })
+              return
+            end
+
+            -- Tracked: format only changed hunks, bottom-up so earlier
+            -- line numbers don't shift as later ranges get rewritten.
+            for i = #hunks, 1, -1 do
+              local hunk = hunks[i]
+              if hunk.type ~= "delete" and hunk.added.count > 0 then
+                local first = hunk.added.start
+                local last = first + hunk.added.count - 1
+                local last_line =
+                  vim.api.nvim_buf_get_lines(args.buf, last - 1, last, true)[1] or ""
+                conform.format({
+                  bufnr = args.buf,
+                  range = {
+                    start = { first, 0 },
+                    ["end"] = { last, #last_line },
+                  },
+                  timeout_ms = 2000,
+                  lsp_format = "fallback",
+                })
+              end
+            end
           end
         '';
       }
