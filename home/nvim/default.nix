@@ -151,7 +151,6 @@
             K = "hover";
             "<leader>rn" = "rename";
             "<leader>ca" = "code_action";
-            "<leader>f" = "format";
           };
         };
         servers = {
@@ -337,47 +336,27 @@
           end
         '';
       }
+    ];
+
+    keymaps = [
       {
-        event = "BufWritePre";
-        pattern = "*";
-        callback.__raw = ''
-          function(args)
-            local conform = require("conform")
-            local ok_gs, gs = pcall(require, "gitsigns")
-            local hunks = ok_gs and gs.get_hunks(args.buf) or nil
-
-            -- Untracked buffer: format the whole thing.
-            if hunks == nil then
-              conform.format({
-                bufnr = args.buf,
-                timeout_ms = 2000,
-                lsp_format = "fallback",
-              })
-              return
-            end
-
-            -- Tracked: format only changed hunks, bottom-up so earlier
-            -- line numbers don't shift as later ranges get rewritten.
-            for i = #hunks, 1, -1 do
-              local hunk = hunks[i]
-              if hunk.type ~= "delete" and hunk.added.count > 0 then
-                local first = hunk.added.start
-                local last = first + hunk.added.count - 1
-                local last_line =
-                  vim.api.nvim_buf_get_lines(args.buf, last - 1, last, true)[1] or ""
-                conform.format({
-                  bufnr = args.buf,
-                  range = {
-                    start = { first, 0 },
-                    ["end"] = { last, #last_line },
-                  },
-                  timeout_ms = 2000,
-                  lsp_format = "fallback",
-                })
-              end
-            end
+        mode = [
+          "n"
+          "v"
+        ];
+        key = "<leader>f";
+        action.__raw = ''
+          function()
+            require("conform").format({
+              timeout_ms = 2000,
+              lsp_format = "fallback",
+            })
           end
         '';
+        options = {
+          silent = true;
+          desc = "Format buffer/selection";
+        };
       }
     ];
   };
